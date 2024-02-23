@@ -8,7 +8,7 @@ use ieee.numeric_std.all;
 
 entity reg_nbit is 
     generic(
-        n       : integer := 32
+        n       : integer := 31
     );
     port(
         clk: in std_logic;
