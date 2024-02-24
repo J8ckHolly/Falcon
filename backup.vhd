@@ -1,14 +1,5 @@
-----------------------------------------------------
------------------Jack Holly-------------------------
------------------modp_montymul_V2-------------------
-----------------------------------------------------
------Stage Verification: Status---------------------
-----------Stage0-------: Check----------------------
-----------Stage1-------: Check----------------------
-----------Stage2-------: Reg Check, mult unverified-
-----------Stage3-------: Reg Check, mult unverified-
-----------Stage4-------: Unverified-----------------
-----------------------------------------------------
+--modp_montymul_V2
+--Jack Holly
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -18,7 +9,7 @@ entity modp_montymul_V2 is
     port(
         A,B,P,P0i: in std_logic_vector(30 downto 0);
         clk, rst: in std_logic;
-        result: out std_logic_vector(61 downto 0)
+        result: out std_logic_vector(30 downto 0)
     );
 end entity;
 
@@ -53,9 +44,7 @@ component reg_nbit is
 end component;
 
 begin 
-    ----------------------------------------------
-    ------------------Stage0----------------------
-    ----------------------------------------------
+
     --Load Registers in Stage0
     stage0_a_reg: reg_nbit 
     port map(
@@ -96,11 +85,7 @@ begin
     -- Multiplication of stage0
     z_out_0 <= std_logic_vector(unsigned(a_out)*unsigned(b_out));
 
-
-    ----------------------------------------------
-    ------------------Stage1----------------------
-    ----------------------------------------------
-    --Load Registers in Stage1
+    --------Stage 1 Registers
     stage1_z_reg: reg_nbit
     generic map(n => 62) 
     port map(
@@ -134,8 +119,7 @@ begin
     s_out_0 <= std_logic_vector(unsigned(z_out_1(30 downto 0))*unsigned(p0i_out_1));
 
     ---Stage2 Registers
-    stage2_s_reg: reg_nbit
-    generic map(n => 62)  
+    stage2_s_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -144,8 +128,7 @@ begin
         q=> s_out_1
     );
 
-    stage2_z_reg: reg_nbit
-    generic map(n => 62)  
+    stage2_z_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -168,8 +151,7 @@ begin
 
     ---Load Registers in Stage 3
 
-    stage3_w_reg: reg_nbit
-    generic map(n => 62)  
+    stage3_w_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -178,8 +160,7 @@ begin
         q=> w_out_1
     );
 
-    stage3_z_reg: reg_nbit
-    generic map(n => 62) 
+    stage3_z_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -197,30 +178,30 @@ begin
         q=> p_out_3
     );
 
-     ----Between Stage 3 and Stage 4
-     d_out_0 <= std_logic_vector(unsigned(z_out_3)+unsigned(w_out_1));
+    ----Between Stage 3 and Stage 4
+    d_out_0 <= std_logic_vector(unsigned(z_out_3)+unsigned(w_out_1));
 
-     ----Loading Stage 4 of Registers
- 
-     stage4_d_reg: reg_nbit 
-     port map(
-         clk => clk, 
-         rst =>rst, 
-         ena => ena, 
-         d=> d_out_0, 
-         q=> d_out_1
-     );
- 
-     stage4_p_reg: reg_nbit 
-     port map(
-         clk => clk, 
-         rst =>rst, 
-         ena => ena, 
-         d=> p_out_3, 
-         q=> p_out_4
-     );
+    ----Loading Stage 4 of Registers
 
-     -----Between Stage 4 and Stage 5
+    stage4_d_reg: reg_nbit 
+    port map(
+        clk => clk, 
+        rst =>rst, 
+        ena => ena, 
+        d=> d_out_0, 
+        q=> d_out_1
+    );
+
+    stage4_p_reg: reg_nbit 
+    port map(
+        clk => clk, 
+        rst =>rst, 
+        ena => ena, 
+        d=> p_out_3, 
+        q=> p_out_4
+    );
+
+    -----Between Stage 4 and Stage 5
     --if(unsigned(d_out_1(61 downto 30)) > unsigned(p_out_4)) then
     --    d_out_sub <= std_logic_vector(unsigned(d_out_1(61 downto 0)) - unsigned(p_out_4));
     --    d_out_2 <= d_out_sub(30 downto 0);
@@ -241,7 +222,5 @@ begin
 
 
     result <= p_out_4;
-
-    
     
 end architecture; 
