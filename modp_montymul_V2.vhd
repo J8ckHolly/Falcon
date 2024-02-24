@@ -18,7 +18,7 @@ entity modp_montymul_V2 is
     port(
         A,B,P,P0i: in std_logic_vector(30 downto 0);
         clk, rst: in std_logic;
-        result: out std_logic_vector(61 downto 0)
+        result: out std_logic_vector(30 downto 0)
     );
 end entity;
 
@@ -133,7 +133,10 @@ begin
     ----Logic between stage1 and stage2
     s_out_0 <= std_logic_vector(unsigned(z_out_1(30 downto 0))*unsigned(p0i_out_1));
 
-    ---Stage2 Registers
+    ----------------------------------------------
+    ------------------Stage2----------------------
+    ----------------------------------------------
+    --Load Registers in Stage2
     stage2_s_reg: reg_nbit
     generic map(n => 62)  
     port map(
@@ -166,7 +169,10 @@ begin
     ---logic between stage 2 and 3
     w_out_0 <= std_logic_vector(unsigned(s_out_1(30 downto 0))*unsigned(p_out_2));
 
-    ---Load Registers in Stage 3
+    ----------------------------------------------
+    ------------------Stage3----------------------
+    ----------------------------------------------
+    --Load Registers in Stage3
 
     stage3_w_reg: reg_nbit
     generic map(n => 62)  
@@ -200,9 +206,13 @@ begin
      ----Between Stage 3 and Stage 4
      d_out_0 <= std_logic_vector(unsigned(z_out_3)+unsigned(w_out_1));
 
-     ----Loading Stage 4 of Registers
+     ----------------------------------------------
+    ------------------Stage4----------------------
+    ----------------------------------------------
+    --Load Registers in Stage4
  
-     stage4_d_reg: reg_nbit 
+     stage4_d_reg: reg_nbit
+     generic map(n => 62) 
      port map(
          clk => clk, 
          rst =>rst, 
@@ -220,16 +230,14 @@ begin
          q=> p_out_4
      );
 
-     -----Between Stage 4 and Stage 5
-    --if(unsigned(d_out_1(61 downto 30)) > unsigned(p_out_4)) then
-    --    d_out_sub <= std_logic_vector(unsigned(d_out_1(61 downto 0)) - unsigned(p_out_4));
-    --    d_out_2 <= d_out_sub(30 downto 0);
-    
-    --else 
-    --    d_out_2 <= std_logic_vector(unsigned(d_out_1(61 downto 31)));
-    --end if;
+    ----Between Stage 4 and Stage 5
+    --d_out_2 <= d_out_1 when  unsigned(p_out_4) >= unsigned(d_out_1),
+               -- std_logic_vector(unsigned(d_out_1) - unsigned(p_out_4)) when OTHERS;
 
-    -----Stage 5 register
+
+
+
+    --Stage 5 register
     --stage5_d_reg: reg_nbit 
     --port map(
     --    clk => clk, 

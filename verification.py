@@ -6,8 +6,11 @@ p0i=[1135219257,1823569546]
 z = []
 z_cut = []
 s = []
+s_cut = []
+w = []
+#d = []
 
-
+# Acts like (30 downto 0)
 def get_select_bits(number, start, end):
     bit_number = bin(number)
     bit_number = str(bit_number)
@@ -20,15 +23,17 @@ def get_select_bits(number, start, end):
 
 for i in range(2):
     z.append(a[i]*b[i])
-    #print(bin(z[0]))
-    #z_cut.append(get_select_bits(z[i],30, 0))
-    #s.append(z_cut[i] * p0i[i])
+    z_cut.append(get_select_bits(z[i],30, 0))
 
-for i in range(2):
-    z_cut.append(get_select_bits(z[0], 30, 0))
-    print(bin(z_cut[i]))
+    s.append(z_cut[i] * p0i[i])
+    s_cut.append(get_select_bits(s[i],30, 0))
 
-#print(get_select_bits(z[0], 30, 0))
+    w.append(s_cut[i] * p[i])
+
+
+    
+
+
 print("Z=",z)
-print("Z_cut=",z)
-#print("S=",s)
+print("Z_cut=",z_cut)
+print("S=",s)

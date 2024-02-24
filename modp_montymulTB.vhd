@@ -17,7 +17,7 @@ architecture beh of montymul_tb is
     signal rst : std_logic := '0';
     signal ena : std_logic := '1';
     signal A, B, P, P0i: std_logic_vector(30 downto 0);
-    signal result: std_logic_vector(61 downto 0);
+    signal result: std_logic_vector(30 downto 0);
     --signal head,a0_out, a1_out, result: std_logic_vector(4 downto 0);
 
     component reg_nbit is 
