@@ -34,6 +34,16 @@ for i in range(2):
     
 
 
-print("Z=",z)
-print("Z_cut=",z_cut)
-print("S=",s)
+#print("Z=",z)
+#print("Z_cut=",z_cut)
+#print("S=",s)
+    
+def to_binary(n):
+    """Converts integer to binary string of length 31"""
+    return bin(n)[2:].zfill(31)
+
+def main():
+    for i in range(33):
+        print(to_binary(i))
+        print("hi")
+
