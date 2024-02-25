@@ -231,8 +231,8 @@ begin
      );
 
     ----Between Stage 4 and Stage 5
-    --d_out_2 <= d_out_1 when  unsigned(p_out_4) >= unsigned(d_out_1),
-               -- std_logic_vector(unsigned(d_out_1) - unsigned(p_out_4)) when OTHERS;
+    d_out_2 <= d_out_1 when  unsigned(p_out_4) >= unsigned(d_out_1)
+            else  std_logic_vector(unsigned(d_out_1) - unsigned(p_out_4));
 
 
 
