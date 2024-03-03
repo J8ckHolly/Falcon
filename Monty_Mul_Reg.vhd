@@ -18,7 +18,7 @@ end entity Register_Array;
 
 architecture Behavioral of Register_Array is
 
-    type registers is array(0 to NUM_REGISTERS) of std_logic_vector(DATA_WIDTH -1 downto 0);
+    type registers is array(0 to NUM_REGISTERS -1) of std_logic_vector(DATA_WIDTH -1 downto 0);
     signal my_reg : registers;
 
     begin
