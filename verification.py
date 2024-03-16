@@ -31,7 +31,7 @@ for i in range(2):
     w.append(s_cut[i] * p[i])
 
 
-    
+
 
 
 #print("Z=",z)
@@ -135,6 +135,18 @@ REV10 = [
 	  63,  575,  319,  831,  191,  703,  447,  959,  127,  639,  383,  895,
 	 255,  767,  511, 1023]
 
+def bit_reverse(i, n):
+    return int(format(i, '0%db' % n)[::-1], 2)
+
+#x = 63
+#rev = (bit_reverse(63,10))
+#print(bin(x))
+#print(bin(rev))
+norm10 = []
+
+for element in REV10:
+    norm10.append(bit_reverse(element, 10))
+
 #print(len(REV10))
 	#for (u = 0; u < n; u ++) {
 	#	size_t v;
@@ -151,7 +163,51 @@ logn = 6
 
 n = 1 << logn
 k = 10 - logn
+gm = [None] * 64
+gmreal = []
+uk = []
+list10norm = []
+ukrev = []
 for u in range(0,n):
-    print(REV10[u<<k])
-
+    #print(u<<k)
+    gmreal.append(REV10[u<<k])
+    v = norm10[u<<k]
+    uk.append(u<<k)
+    list10norm.append(v)
+    ukrev.append(bit_reverse(u<<k,10))
+    #gm[v] = "x1-" + str(u)
+    #print(gm)
+    #print(" ")
+    pass
 #ultimately there will be an equal number of twiddle factors as there are number of coefficients
+#print("UnSorted")
+#print(gm)
+#print("Sorted")
+#print(sorted(mylist))
+
+for element in REV10:
+    #print(bin(element))
+    pass
+print("u<<k")
+print(uk)
+print("REV10[u<<k]")
+print(gmreal)
+print("REV(u<<k)")
+print(ukrev)
+
+#print(norm10)
+
+
+
+#function reverse_any_vector (a: in std_logic_vector)
+#return std_logic_vector is
+#  variable result: std_logic_vector(a'RANGE);
+#  alias aa: std_logic_vector(a'REVERSE_RANGE) is a;
+#begin
+#  for i in aa'RANGE loop
+#    result(i) := aa(i);
+#  end loop;
+#  return result;
+#end; -- function reverse_any_vector
+
+
