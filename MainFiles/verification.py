@@ -168,6 +168,9 @@ gmreal = []
 uk = []
 list10norm = []
 ukrev = []
+ulist = []
+for u in range(0, n):
+	ulist.append(u)
 for u in range(0,n):
     #print(u<<k)
     gmreal.append(REV10[u<<k])
@@ -188,12 +191,14 @@ for u in range(0,n):
 for element in REV10:
     #print(bin(element))
     pass
-#print("u<<k")
-#print(uk)
-#print("REV10[u<<k]")
-#print(gmreal)
-#print("REV(u<<k)")
-#print(ukrev)
+print("u")
+print(ulist)
+print("u<<k")
+print(uk)
+print("REV10[u<<k]")
+print(gmreal)
+print("REV(u<<k)")
+print(ukrev)
 
 #print(norm10)
 
@@ -227,5 +232,5 @@ for i in range(0,64):
 	#print("wait for 10 ns;")
 	#print(len("0000000000"))
 	pass
-x = 0b0000000000
-print(x)
+#x = 0b0000000000
+#print(x)

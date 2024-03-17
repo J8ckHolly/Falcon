@@ -20,19 +20,6 @@ architecture beh of TB_modp_montymul_V2 is
     signal result: std_logic_vector(30 downto 0);
     --signal head,a0_out, a1_out, result: std_logic_vector(4 downto 0);
 
-    component reg_nbit is 
-    generic(
-        n       : integer := 31
-    );
-    port(
-        clk: in std_logic;
-        rst: in std_logic;
-        ena: in std_logic;
-
-        d: in std_logic_vector(n-1 downto 0);
-        q: out std_logic_vector(n-1 downto 0)
-    );
-    end component;
 
     begin
     montymul : entity work.modp_montymul_V2
