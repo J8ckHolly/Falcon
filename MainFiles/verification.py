@@ -223,5 +223,9 @@ def print_binary_10_bits(x):
 #print_binary_10_bits(x)  # Output: 0000000111
 
 for i in range(0,64):
-	print("u <= \"",print_binary_10_bits(i),"\";")
-	print("wait for 10 ns;")
+	#print("u <= \"",print_binary_10_bits(i),"\";")
+	#print("wait for 10 ns;")
+	#print(len("0000000000"))
+	pass
+x = 0b0000000000
+print(x)
