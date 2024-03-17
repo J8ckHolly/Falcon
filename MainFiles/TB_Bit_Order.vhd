@@ -44,6 +44,14 @@ architecture beh of TB_Bit_Order_Func is
                 wait for 10 ns;
                 u <= "0000000101";
                 wait for 10 ns;
+                u <= "0000000110";
+                wait for 10 ns;
+                u <= "0000000111";
+                wait for 10 ns;
+                u <= "0000001000";
+                wait for 10 ns;
+                u <= "0000001001";
+                wait for 10 ns;
             
             
         end process;
