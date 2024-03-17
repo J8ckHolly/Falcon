@@ -34,17 +34,12 @@ architecture beh of FSM is
         begin
             if rst = '1' then			
 				current_state <= state_rst;
-                report "state_rst";
             else
                 case total_counter is
                     when 0 to 3 => current_state <= load_reg;
-                    report "load Register";
                     when 4 to 7 => current_state <= first_run;
-                    report "First Run";
                     when 8 to 63 => current_state <= normal_run;
-                    report "Normal Run";
                     when others => current_state <= state_done;
-                    report "Done";
                 end case;
             end if;
         end process;

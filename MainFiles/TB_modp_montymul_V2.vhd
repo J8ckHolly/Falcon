@@ -5,10 +5,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity montymul_tb is
+entity TB_modp_montymul_V2 is
 end entity;
 
-architecture beh of montymul_tb is
+architecture beh of TB_modp_montymul_V2 is
 
     constant ClockFrequency : integer := 100e6;
     constant ClockPeriod : time := 1000ms/ClockFrequency;

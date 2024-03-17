@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity FSMTB is
+entity TB_FSM is
 end entity;
 
-architecture behavior of FSMTB is
+architecture behavior of TB_FSM is
 
 
     constant ClockFrequency : integer := 100e6;

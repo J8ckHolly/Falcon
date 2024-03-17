@@ -1,8 +1,18 @@
+----------------------------------------------------
+-----------------Jack Holly-------------------------
+-----------------3.16.2024--------------------------
+----------------Reg_Twiddle_Factor------------------
+----------------------------------------------------
+---------- Verification: Status---------------------
+----------All Functions  Verified-------------------
+----------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity Holding_Array is
+entity Reg_Twiddle_Factor is
     generic (
         NUM_REGISTERS : integer := 64;  -- Number of registers
         DATA_WIDTH    : integer := 31   -- Width of each register
@@ -12,12 +22,11 @@ entity Holding_Array is
         rst       : in  std_logic;
         data_in   : in  std_logic_vector(DATA_WIDTH - 1 downto 0);
         ena       : in  std_logic;
-        reg_addr  : in std_logic_vector(5 downto 0);
-        data_out  : out std_logic_vector(DATA_WIDTH - 1 downto 0)
+        reg_addr  : in std_logic_vector(5 downto 0)
     );
-end entity Holding_Array;
+end Reg_Twiddle_Factor;
 
-architecture Behavioral of Holding_Array is
+architecture Behavior of Reg_Twiddle_Factor is
 
     type registers is array(0 to NUM_REGISTERS -1) of std_logic_vector(DATA_WIDTH -1 downto 0);
     signal my_reg : registers;
@@ -40,4 +49,4 @@ architecture Behavioral of Holding_Array is
             end if;
     end process;
 
-end architecture Behavioral;
+end architecture Behavior;
