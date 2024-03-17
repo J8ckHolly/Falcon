@@ -188,12 +188,12 @@ for u in range(0,n):
 for element in REV10:
     #print(bin(element))
     pass
-print("u<<k")
-print(uk)
-print("REV10[u<<k]")
-print(gmreal)
-print("REV(u<<k)")
-print(ukrev)
+#print("u<<k")
+#print(uk)
+#print("REV10[u<<k]")
+#print(gmreal)
+#print("REV(u<<k)")
+#print(ukrev)
 
 #print(norm10)
 
@@ -210,4 +210,18 @@ print(ukrev)
 #  return result;
 #end; -- function reverse_any_vector
 
+def print_binary_10_bits(x):
+    if x >= 0:
+        binary = bin(x)[2:].zfill(10)  # Convert to binary and fill with leading zeros
+    else:
+        # For negative numbers, print two's complement
+        binary = bin(2**10 + x)[2:]
+    return (binary)
 
+# Example usage:
+#x = 7
+#print_binary_10_bits(x)  # Output: 0000000111
+
+for i in range(0,64):
+	print("u <= ",print_binary_10_bits(i),";")
+	print("wait for 10 ns;")
