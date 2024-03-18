@@ -131,10 +131,10 @@ architecture behavior of system is
         montymul_direct : entity work.modp_montymul_V2
         port map(clk => clk, 
         rst =>rst, 
-        A =>x1_mux_out, 
-        B=>g_reg_out, 
-        P=>p_reg_out, 
-        P0i =>p0i_reg_out, 
+        A => x1_mux_out, 
+        B=> g_reg_out, 
+        P=> p_reg_out, 
+        P0i => p0i_reg_out, 
         result=> direct_monty_mul_out);
 
         montymul_inverse : entity work.modp_montymul_V2
@@ -237,8 +237,8 @@ architecture behavior of system is
         variable_mux_reg=> variable_mux_reg_ctrl,
         constant_reg_ena=> constant_reg_ena_ctrl,
         constant_reg_rst=> constant_reg_rst_ctrl,
-        twiddle_reg_rst=> twiddle_reg_rst_ctrl,
-        bit_gen_counter=> bit_gen_counter_number,
+        twiddle_reg_rst=>  twiddle_reg_rst_ctrl,
+        bit_gen_counter=>  bit_gen_counter_number,
         twiddle_mux_counter=> twiddle_mux_counter_number);
 
 

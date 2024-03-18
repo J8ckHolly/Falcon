@@ -178,7 +178,14 @@ begin
     conditional_post_logic <= conditional_add_post_shift when  (unsigned(p_out_3) >= unsigned(conditional_add_post_shift))
             else  std_logic_vector(unsigned(conditional_add_post_shift) - unsigned(p_out_3));
 
-    result <= conditional_post_logic(30 downto 0);
+    stage3_result_spare_cycle: reg_nbit 
+    port map(
+        clk => clk, 
+        rst =>rst, 
+        ena => ena, 
+        d=> conditional_post_logic(30 downto 0), 
+        q=> result
+    );
     
     
 end architecture; 

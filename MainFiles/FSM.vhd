@@ -55,18 +55,19 @@ architecture beh of FSM is
 
             if(rising_edge(clk) and clk = '1') then
                 total_counter <= total_counter + 1;
-                    
-                if (twiddle_multiplexer_counter < 3) then 
-                    twiddle_multiplexer_counter <= twiddle_multiplexer_counter + 1;
-                else
-                    twiddle_multiplexer_counter <= 0;
+
+                --if current_state = normal_run then
+                if total_counter >= 9 then
+                    if (twiddle_multiplexer_counter < 3) then 
+                        twiddle_multiplexer_counter <= twiddle_multiplexer_counter + 1;
+                    else
+                        twiddle_multiplexer_counter <= 0;
+                        bit_counter <= bit_counter + 1;
+                    end if;
                 end if;
-                
-                if(total_counter >= 4) then
-                    bit_counter <= bit_counter + 1;
-                end if;
+            
             end if;
-            bit_gen_counter <= std_logic_vector(to_unsigned(bit_counter,10));
+            bit_gen_counter <= std_logic_vector(to_unsigned(bit_counter,10)); --This Shit is one clock cycle behind
             twiddle_mux_counter <= std_logic_vector(to_unsigned(twiddle_multiplexer_counter,2));
         end process;
 
@@ -97,7 +98,7 @@ architecture beh of FSM is
                     constant_mux_reg <= '1';
                     variable_mux_reg <= '1';
                     constant_reg_ena <= '1';
-
+                    
                 when state_done =>
                     constant_mux_reg <= '0';
                     variable_mux_reg <= '0';
