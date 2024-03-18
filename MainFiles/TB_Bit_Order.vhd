@@ -25,6 +25,7 @@ architecture beh of TB_Bit_Order_Func is
     signal b: std_logic_vector(5 downto 0);
     begin
         Bit_Func : entity work.Bit_Order_Func
+        generic map(K =>4)
         port map(u => u, b => b);
 
         --radix signal sim:/montymul_tb/P unsigned

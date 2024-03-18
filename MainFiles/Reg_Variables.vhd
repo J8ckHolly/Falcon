@@ -42,12 +42,12 @@ architecture Behavioral of Reg_Variables is
                     end loop;
 
                 else
-                    if(ena = '1') then
+                    if(ena = '1') then 
                         my_reg(0) <= data_in;
                         for i in 0 to NUM_REGISTERS - 2 loop
                             my_reg(i + 1) <= my_reg(i);
                         end loop;
-                        data_out <= my_reg(NUM_REGISTERS - 1);
+                        data_out <= my_reg(NUM_REGISTERS - 2); --weird HotFix
                     end if;
                 end if;
             end if;

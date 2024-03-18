@@ -34,7 +34,6 @@ architecture behavior of TB_FSM is
         variable_mux_reg=> variable_mux_reg,
         constant_reg_ena=> constant_reg_ena,
         constant_reg_rst=> constant_reg_rst,
-        twiddle_reg_ena=> twiddle_reg_ena,
         twiddle_reg_rst=> twiddle_reg_rst,
         bit_gen_counter=> bit_gen_counter,
         twiddle_mux_counter=> twiddle_mux_counter);

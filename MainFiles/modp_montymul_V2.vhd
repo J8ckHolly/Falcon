@@ -3,11 +3,10 @@
 -----------------modp_montymul_V2-------------------
 ----------------------------------------------------
 -----Stage Verification: Status---------------------
-----------Stage0-------: Check----------------------
-----------Stage1-------: Check----------------------
-----------Stage2-------: Reg Check, mult unverified-
-----------Stage3-------: Reg Check, mult unverified-
-----------Stage4-------: Unverified-----------------
+----------Stage0-------: Reg: Check----Math: ----------------
+----------Stage1-------: Reg: Check----Math: ----------------
+----------Stage2-------: Reg: Check----Math: ---- unverified-
+----------Stage3-------: Result Check--Math: --- unverified--
 ----------------------------------------------------
 
 library ieee;
@@ -24,18 +23,19 @@ end entity;
 
 architecture beh of modp_montymul_V2 is 
 
-signal a_out, b_out: std_logic_vector(30 downto 0);
+--signal a_out, b_out: std_logic_vector(30 downto 0);
 
-signal z_out_0, z_out_1, z_out_2, z_out_3: std_logic_vector(61 downto 0);
-signal s_out_0, s_out_1: std_logic_vector(61 downto 0);
-signal w_out_0, w_out_1: std_logic_vector(61 downto 0);
-signal d_out_0, d_out_1, d_out_sub: std_logic_vector(61 downto 0);
-signal d_out_2: std_logic_vector(30 downto 0);
+signal x_out_0, x_out_1, x_out_2, x_out_3: std_logic_vector(61 downto 0);
+signal y_out_1_before_shift: std_logic_vector(92 downto 0);
+signal y_out_1_after_shift,y_out_2: std_logic_vector(30 downto 0); --Check This Later
+signal z_out_2,z_out_3: std_logic_vector(61 downto 0);
 
+signal conditional_add_pre_shift: std_logic_vector(61 downto 0);
+signal conditional_add_post_shift: std_logic_vector(31 downto 0); --Top 32 Bits
+signal conditional_post_logic: std_logic_vector(31 downto 0);
 
-
-signal p_out_0, p_out_1, p_out_2, p_out_3, p_out_4: std_logic_vector(30 downto 0);
-signal p0i_out_0, p0i_out_1: std_logic_vector(30 downto 0);
+signal p_out_1, p_out_2, p_out_3: std_logic_vector(30 downto 0);
+signal p0i_out_1: std_logic_vector(30 downto 0);
 signal ena: std_logic := '1';
 
 component reg_nbit is 
@@ -56,108 +56,70 @@ begin
     ----------------------------------------------
     ------------------Stage0----------------------
     ----------------------------------------------
+    
+
+    -- Multiplication of stage0
+    x_out_0 <= std_logic_vector(unsigned(A)*unsigned(B));
+
     --Load Registers in Stage0
-    stage0_a_reg: reg_nbit 
+    stage0_x_reg: reg_nbit
+    generic map(n => 62) 
     port map(
         clk => clk, 
         rst =>rst, 
         ena => ena, 
-        d=> A, 
-        q=> a_out
+        d=> x_out_0, 
+        q=> x_out_1
     );
 
-    stage0_b_reg: reg_nbit 
-    port map(
-        clk => clk, 
-        rst =>rst, 
-        ena => ena, 
-        d=> B, 
-        q=> b_out
-    );
-    
     stage0_p_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
         ena => ena, 
         d=> P, 
-        q=> p_out_0
+        q=> p_out_1
     );
+
 
     stage0_p0i_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
         ena => ena, 
-        d=> P0i, 
-        q=> p0i_out_0
+        d=> p0i, 
+        q=> p0i_out_1
     );
-
-    -- Multiplication of stage0
-    z_out_0 <= std_logic_vector(unsigned(a_out)*unsigned(b_out));
-
 
     ----------------------------------------------
     ------------------Stage1----------------------
     ----------------------------------------------
-    --Load Registers in Stage1
-    stage1_z_reg: reg_nbit
-    generic map(n => 62) 
+
+    ----Logic between stage1 and stage2
+    y_out_1_before_shift <= std_logic_vector(unsigned(x_out_1)*unsigned(p0i_out_1));
+    y_out_1_after_shift <= y_out_1_before_shift(30 downto 0);
+    
+    --Load Registers in Stage2
+    stage1_y_reg: reg_nbit
     port map(
         clk => clk, 
         rst =>rst, 
         ena => ena, 
-        d=> z_out_0, 
-        q=> z_out_1
+        d=> y_out_1_after_shift,
+        q=> y_out_2
+    );
+
+    stage1_x_reg: reg_nbit
+    generic map(n => 62)  
+    port map(
+        clk => clk, 
+        rst =>rst, 
+        ena => ena, 
+        d=> x_out_1, 
+        q=> x_out_2
     );
 
     stage1_p_reg: reg_nbit 
-    port map(
-        clk => clk, 
-        rst =>rst, 
-        ena => ena, 
-        d=> p_out_0, 
-        q=> p_out_1
-    );
-
-
-    stage1_p0i_reg: reg_nbit 
-    port map(
-        clk => clk, 
-        rst =>rst, 
-        ena => ena, 
-        d=> p0i_out_0, 
-        q=> p0i_out_1
-    );
-
-    ----Logic between stage1 and stage2
-    s_out_0 <= std_logic_vector(unsigned(z_out_1(30 downto 0))*unsigned(p0i_out_1));
-
-    ----------------------------------------------
-    ------------------Stage2----------------------
-    ----------------------------------------------
-    --Load Registers in Stage2
-    stage2_s_reg: reg_nbit
-    generic map(n => 62)  
-    port map(
-        clk => clk, 
-        rst =>rst, 
-        ena => ena, 
-        d=> s_out_0, 
-        q=> s_out_1
-    );
-
-    stage2_z_reg: reg_nbit
-    generic map(n => 62)  
-    port map(
-        clk => clk, 
-        rst =>rst, 
-        ena => ena, 
-        d=> z_out_1, 
-        q=> z_out_2
-    );
-
-    stage2_p_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -166,26 +128,16 @@ begin
         q=> p_out_2
     );
 
-    ---logic between stage 2 and 3
-    w_out_0 <= std_logic_vector(unsigned(s_out_1(30 downto 0))*unsigned(p_out_2));
+    ----------------------------------------------
+    ------------------Stage2----------------------
+    ----------------------------------------------
+    
+    z_out_2 <= std_logic_vector(unsigned(y_out_2)*unsigned(p_out_2));
 
-    ----------------------------------------------
-    ------------------Stage3----------------------
-    ----------------------------------------------
     --Load Registers in Stage3
 
-    stage3_w_reg: reg_nbit
+    stage2_z_reg: reg_nbit
     generic map(n => 62)  
-    port map(
-        clk => clk, 
-        rst =>rst, 
-        ena => ena, 
-        d=> w_out_0, 
-        q=> w_out_1
-    );
-
-    stage3_z_reg: reg_nbit
-    generic map(n => 62) 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -194,7 +146,17 @@ begin
         q=> z_out_3
     );
 
-    stage3_p_reg: reg_nbit 
+    stage2_x_reg: reg_nbit
+    generic map(n => 62) 
+    port map(
+        clk => clk, 
+        rst =>rst, 
+        ena => ena, 
+        d=> x_out_2, 
+        q=> x_out_3
+    );
+
+    stage2_p_reg: reg_nbit 
     port map(
         clk => clk, 
         rst =>rst, 
@@ -203,53 +165,20 @@ begin
         q=> p_out_3
     );
 
-     ----Between Stage 3 and Stage 4
-     d_out_0 <= std_logic_vector(unsigned(z_out_3)+unsigned(w_out_1));
-
-     ----------------------------------------------
-    ------------------Stage4----------------------
     ----------------------------------------------
-    --Load Registers in Stage4
+    ------------------Stage3----------------------
+    ----------------------------------------------
+     ----Between Stage 3 and done
+     
+    conditional_add_pre_shift <= std_logic_vector(unsigned(z_out_3)+unsigned(x_out_3));
+    conditional_add_post_shift <= conditional_add_pre_shift(61 downto 30);
+
  
-     stage4_d_reg: reg_nbit
-     generic map(n => 62) 
-     port map(
-         clk => clk, 
-         rst =>rst, 
-         ena => ena, 
-         d=> d_out_0, 
-         q=> d_out_1
-     );
- 
-     stage4_p_reg: reg_nbit 
-     port map(
-         clk => clk, 
-         rst =>rst, 
-         ena => ena, 
-         d=> p_out_3, 
-         q=> p_out_4
-     );
 
-    ----Between Stage 4 and Stage 5
-    d_out_2 <= d_out_1 when  unsigned(p_out_4) >= unsigned(d_out_1)
-            else  std_logic_vector(unsigned(d_out_1) - unsigned(p_out_4));
+    conditional_post_logic <= conditional_add_post_shift when  (unsigned(p_out_3) >= unsigned(conditional_add_post_shift))
+            else  std_logic_vector(unsigned(conditional_add_post_shift) - unsigned(p_out_3));
 
-
-
-
-    --Stage 5 register
-    --stage5_d_reg: reg_nbit 
-    --port map(
-    --    clk => clk, 
-    --    rst =>rst, 
-    --    ena => ena, 
-    --    d=> d_out_2, 
-    --    q=> result
-    --);
-
-
-    result <= p_out_4;
-
+    result <= conditional_post_logic(30 downto 0);
     
     
 end architecture; 

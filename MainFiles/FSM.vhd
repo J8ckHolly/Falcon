@@ -12,7 +12,6 @@ port(
     constant_reg_ena: out std_logic;
     constant_reg_rst: out std_logic;
 
-    twiddle_reg_ena: out std_logic;
     twiddle_reg_rst: out std_logic;
 
     bit_gen_counter: out std_logic_vector(9 downto 0);
@@ -34,9 +33,10 @@ architecture beh of FSM is
         begin
             if rst = '1' then			
 				current_state <= state_rst;
-            else
+            end if;
+            if(rising_edge(clk) and clk = '1') then
                 case total_counter is
-                    when 0 to 3 => current_state <= load_reg;
+                    when 0 to 3 => current_state <= load_reg; --works
                     when 4 to 7 => current_state <= first_run;
                     when 8 to 63 => current_state <= normal_run;
                     when others => current_state <= state_done;
@@ -56,7 +56,7 @@ architecture beh of FSM is
             if(rising_edge(clk) and clk = '1') then
                 total_counter <= total_counter + 1;
                     
-                if (twiddle_multiplexer_counter < 4) then 
+                if (twiddle_multiplexer_counter < 3) then 
                     twiddle_multiplexer_counter <= twiddle_multiplexer_counter + 1;
                 else
                     twiddle_multiplexer_counter <= 0;
@@ -77,30 +77,31 @@ architecture beh of FSM is
 				when state_rst =>
                     constant_reg_rst <= '1';
 					twiddle_reg_rst <= '1';
+                    constant_mux_reg <= '0';
+                    variable_mux_reg <= '0';
+                    constant_reg_ena <= '0';
 
                 when load_reg =>
-                    constant_mux_reg <= '1';
-                    variable_mux_reg <= '1';
-                    constant_reg_ena <= '1';
-                    twiddle_reg_ena <= '0';
-
-                when first_run =>
-                    constant_mux_reg <= '0';
-                    variable_mux_reg <= '1';
-                    constant_reg_ena <= '1';
-                    twiddle_reg_ena <= '0';
-
-                when normal_run =>
                     constant_mux_reg <= '0';
                     variable_mux_reg <= '0';
                     constant_reg_ena <= '1';
-                    twiddle_reg_ena <= '1';
+                    constant_reg_rst <= '0';
+                    twiddle_reg_rst <= '0';
+
+                when first_run =>
+                    constant_mux_reg <= '1';
+                    variable_mux_reg <= '0';
+                    constant_reg_ena <= '1';
+
+                when normal_run =>
+                    constant_mux_reg <= '1';
+                    variable_mux_reg <= '1';
+                    constant_reg_ena <= '1';
 
                 when state_done =>
                     constant_mux_reg <= '0';
                     variable_mux_reg <= '0';
                     constant_reg_ena <= '0';
-                    twiddle_reg_ena <= '0';
             end case;
         end process;
 
