@@ -28,6 +28,8 @@ architecture beh of FSM is
     signal bit_counter: integer := 0;
     signal twiddle_multiplexer_counter: integer := 0;
 
+    signal clock_ena: std_logic := '1';
+
     begin
         State_Mode: process(clk, total_counter, rst)
         begin
@@ -47,27 +49,29 @@ architecture beh of FSM is
 
         clk_timing: process(clk)
         begin
-            if current_state = state_rst then
-                total_counter <= 0;
-                twiddle_multiplexer_counter <= 0;
-                bit_counter <= 0;
-            end if;
-            
-            if(rising_edge(clk) and clk = '1') then
-                total_counter <= total_counter + 1;
-
-                --if current_state = normal_run then
-                if total_counter >= 9 then
-                    if (twiddle_multiplexer_counter < 3) then 
-                        twiddle_multiplexer_counter <= twiddle_multiplexer_counter + 1;
-                    else
-                        twiddle_multiplexer_counter <= 0;
-                        bit_counter <= bit_counter + 1;
-                    end if;
-                --else 
-                --    twiddle_multiplexer_counter <= 5;
+            if clock_ena = '1' then
+                if current_state = state_rst then
+                    total_counter <= 0;
+                    twiddle_multiplexer_counter <= 0;
+                    bit_counter <= 0;
                 end if;
-            
+                
+                if(rising_edge(clk) and clk = '1') then
+                    total_counter <= total_counter + 1;
+
+                    --if current_state = normal_run then
+                    if total_counter >= 9 then
+                        if (twiddle_multiplexer_counter < 3) then 
+                            twiddle_multiplexer_counter <= twiddle_multiplexer_counter + 1;
+                        else
+                            twiddle_multiplexer_counter <= 0;
+                            bit_counter <= bit_counter + 1;
+                        end if;
+                    --else 
+                    --    twiddle_multiplexer_counter <= 5;
+                    end if;
+                
+                end if;
             end if;
         end process;
 
@@ -103,6 +107,7 @@ architecture beh of FSM is
                     constant_mux_reg <= '0';
                     variable_mux_reg <= '0';
                     constant_reg_ena <= '0';
+                    clock_ena <= '0';
             end case;
         end process;
 

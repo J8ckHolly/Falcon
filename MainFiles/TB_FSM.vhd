@@ -46,6 +46,6 @@ architecture behavior of TB_FSM is
  
              wait for 10ns;
              rst <= '0';
-             wait for 10ns;
+             wait;
         end process;
 end architecture;

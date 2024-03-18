@@ -31,8 +31,8 @@ signal y_out_1_after_shift,y_out_2: std_logic_vector(30 downto 0); --Check This 
 signal z_out_2,z_out_3: std_logic_vector(61 downto 0);
 
 signal conditional_add_pre_shift: std_logic_vector(61 downto 0);
-signal conditional_add_post_shift: std_logic_vector(31 downto 0); --Top 32 Bits
-signal conditional_post_logic: std_logic_vector(31 downto 0);
+signal conditional_add_post_shift: std_logic_vector(30 downto 0); --Top 31 Bits
+signal conditional_post_logic: std_logic_vector(30 downto 0);
 
 signal p_out_1, p_out_2, p_out_3: std_logic_vector(30 downto 0);
 signal p0i_out_1: std_logic_vector(30 downto 0);
@@ -171,7 +171,7 @@ begin
      ----Between Stage 3 and done
      
     conditional_add_pre_shift <= std_logic_vector(unsigned(z_out_3)+unsigned(x_out_3));
-    conditional_add_post_shift <= conditional_add_pre_shift(61 downto 30);
+    conditional_add_post_shift <= conditional_add_pre_shift(61 downto 31);
 
  
 
