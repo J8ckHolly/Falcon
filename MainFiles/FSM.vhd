@@ -34,11 +34,11 @@ architecture beh of FSM is
             if rst = '1' then			
 				current_state <= state_rst;
             end if;
-            if(rising_edge(clk) and clk = '1') then
+            if(rising_edge(clk) and clk = '1') then --Janky AF
                 case total_counter is
                     when 0 to 3 => current_state <= load_reg; --works
                     when 4 to 7 => current_state <= first_run;
-                    when 8 to 63 => current_state <= normal_run;
+                    when 8 to 263 => current_state <= normal_run;
                     when others => current_state <= state_done;
                 end case;
             end if;
@@ -52,7 +52,7 @@ architecture beh of FSM is
                 twiddle_multiplexer_counter <= 0;
                 bit_counter <= 0;
             end if;
-
+            
             if(rising_edge(clk) and clk = '1') then
                 total_counter <= total_counter + 1;
 
@@ -64,11 +64,11 @@ architecture beh of FSM is
                         twiddle_multiplexer_counter <= 0;
                         bit_counter <= bit_counter + 1;
                     end if;
+                --else 
+                --    twiddle_multiplexer_counter <= 5;
                 end if;
             
             end if;
-            bit_gen_counter <= std_logic_vector(to_unsigned(bit_counter,10)); --This Shit is one clock cycle behind
-            twiddle_mux_counter <= std_logic_vector(to_unsigned(twiddle_multiplexer_counter,2));
         end process;
 
         State_effects: process(current_state)
@@ -105,6 +105,9 @@ architecture beh of FSM is
                     constant_reg_ena <= '0';
             end case;
         end process;
+
+        bit_gen_counter <= std_logic_vector(to_unsigned(bit_counter,10)); --This Shit is one clock cycle behind
+        twiddle_mux_counter <= std_logic_vector(to_unsigned(twiddle_multiplexer_counter,2));
 
 end architecture;
 

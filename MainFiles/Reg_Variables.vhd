@@ -47,10 +47,10 @@ architecture Behavioral of Reg_Variables is
                         for i in 0 to NUM_REGISTERS - 2 loop
                             my_reg(i + 1) <= my_reg(i);
                         end loop;
-                        data_out <= my_reg(NUM_REGISTERS - 2); --weird HotFix
+                        --data_out <= my_reg(NUM_REGISTERS - 2); --weird HotFix
                     end if;
                 end if;
             end if;
     end process;
-
+    data_out <= my_reg(NUM_REGISTERS - 1); --weird HotFix
 end architecture Behavioral;
