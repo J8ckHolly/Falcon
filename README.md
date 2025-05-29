@@ -1,7 +1,7 @@
 📌 Post-Quantum Cryptography Optimization
 This senior capstone project focuses on optimizing lattice-based cryptographic frameworks, with a particular emphasis on creating a twiddle factor generator for use in polynomial multiplication — a key performance bottleneck in post-quantum systems. Twiddle factors are complex roots of unity used in Number Theoretic Transforms (NTT), essential for efficient polynomial multiplication. By generating these values dynamically at runtime rather than precomputing them, we improve flexibility and reduce memory overhead in constrained environments.
 
-The core algorithm implemented was based off of Falcon
+The core algorithm implemented is based off of Falcon
 ![image](https://github.com/user-attachments/assets/ff271a77-4e8b-4900-8f7e-e1e99e5ada2c)
 
 🔐 Problem Statement
